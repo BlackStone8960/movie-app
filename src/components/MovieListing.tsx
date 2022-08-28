@@ -13,8 +13,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { CONTENTS_PER_PAGE } from "../constants/contents";
 import { headerHeight, horizontalMargin } from "../constants/length";
+import { CONTENTS_PER_PAGE } from "../constants/page";
 import { useAppSelector } from "../redux/hooks";
 import ErrorMsg from "./ErrorMsg";
 import LoadingSpinner from "./LoadingSpinner";
@@ -61,7 +61,14 @@ const MovieListing = () => {
           <LoadingSpinner />
         ) : movie?.status === "idle" && movie?.contents?.Search?.length ? (
           <Box>
-            <Flex align="center" justify="left" flexWrap="wrap" mb="24px">
+            <Flex
+              align="flex-start"
+              justify="left"
+              alignContent="flex-start"
+              flexWrap="wrap"
+              mb="24px"
+              minH="670px"
+            >
               {movie.contents.Search.map((m: any) => (
                 <VStack key={m?.imdbID} w="150px" h="325px" m="5px">
                   <Image

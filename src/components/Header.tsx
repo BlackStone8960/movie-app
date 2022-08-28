@@ -37,7 +37,7 @@ const Header = () => {
     >
       <HStack h="100%">
         <Box mr="30vw">
-          <Text fontFamily="Bebas Neue" fontSize="24px">
+          <Text fontFamily="Bebas Neue" fontSize="24px" color="vanflixRed">
             VANFLIX
           </Text>
         </Box>

@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Center, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { CONTENTS_PER_PAGE } from "../constants/contents";
+import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/page";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchMovies, setPage } from "../redux/movieSlice";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
@@ -45,14 +45,30 @@ const Pagination = () => {
 
   const createPagination = (numOfPages: number) => {
     const pageIndexComponents = [];
-    for (let i = 1; i <= numOfPages; i++) {
+    let lowerLimit = 1;
+    let upperLimit = numOfPages;
+    const currentPage = movie.page;
+    const oneSideOfPageRange = Math.floor(PAGINATION_LIMIT / 2);
+
+    // If the total number of pages is greater than the defined pagination range, do not display all page indexes
+    if (numOfPages > PAGINATION_LIMIT) {
+      const lowerSideIndex = currentPage - oneSideOfPageRange;
+      const upperSideIndex = currentPage + oneSideOfPageRange;
+      if (lowerSideIndex > 1) lowerLimit = lowerSideIndex;
+      // else if (1 + PAGINATION_LIMIT > upperSideIndex)
+      //   upperLimit = 1 + PAGINATION_LIMIT;
+      if (upperSideIndex < numOfPages) upperLimit = upperSideIndex;
+      // else if (numOfPages - PAGINATION_LIMIT < lowerSideIndex)
+      //   lowerLimit = numOfPages - PAGINATION_LIMIT;
+    }
+    for (let i = lowerLimit; i <= upperLimit; i++) {
       pageIndexComponents.push(
         <Text
           key={i}
           onClick={() => onPaginationClicked(i)}
           fontSize="20px"
           cursor="pointer"
-          color={i === movie.page ? "red" : "fontWhite"}
+          color={i === currentPage ? "vanflixRed" : "fontWhite"}
         >
           {i}
         </Text>
