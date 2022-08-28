@@ -13,10 +13,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { CONTENTS_PER_PAGE } from "../constants/contents";
 import { headerHeight, horizontalMargin } from "../constants/length";
 import { useAppSelector } from "../redux/hooks";
 import ErrorMsg from "./ErrorMsg";
 import LoadingSpinner from "./LoadingSpinner";
+import Pagination from "./Pagination";
 
 const MovieListing = () => {
   const { movie } = useAppSelector((state) => state);
@@ -25,6 +27,7 @@ const MovieListing = () => {
 
   const renderErrorMsg = (error: any) => {
     let errorMsg = "";
+
     switch (error) {
       case "Movie not found!":
         errorMsg = "Movie not found, try other words.";
@@ -35,6 +38,7 @@ const MovieListing = () => {
       default:
         errorMsg = "Something went wrong.";
     }
+
     return <ErrorMsg text={errorMsg} />;
   };
 
@@ -43,43 +47,49 @@ const MovieListing = () => {
     onOpen();
   };
 
+  const verifyPoster = (movie: any): string =>
+    movie.Poster !== "N/A" && movie?.Poster
+      ? movie.Poster
+      : `${process.env.PUBLIC_URL}/noImageFound.png`;
+
   return (
     <>
       <Box p={`${headerHeight} ${horizontalMargin}`}>
         {movie?.searchTitle === "" ? (
-          <ErrorMsg text="Put some words in the search box!" />
+          <ErrorMsg text="Enter some words in the search box!" />
         ) : movie?.status === "loading" ? (
           <LoadingSpinner />
         ) : movie?.status === "idle" && movie?.contents?.Search?.length ? (
-          <Flex align="center" justify="left" flexWrap="wrap">
-            {movie.contents.Search.map((m: any) => (
-              <VStack key={m?.imdbID} w="150px" h="325px" m="5px">
-                <Image
-                  src={
-                    m.Poster !== "N/A" && m?.Poster
-                      ? m.Poster
-                      : `${process.env.PUBLIC_URL}/noImageFound.png`
-                  }
-                  w="150px"
-                  h="225px"
-                  objectFit="cover"
-                />
-                <Text
-                  fontSize="14px"
-                  h="42px"
-                  overflow="hidden"
-                  mb="16px"
-                >{`${m?.Title} (${m?.Year})`}</Text>
-                <Button
-                  onClick={() => onOpenDetails(m)}
-                  color="bgBlack"
-                  size="sm"
-                >
-                  Detail
-                </Button>
-              </VStack>
-            ))}
-          </Flex>
+          <Box>
+            <Flex align="center" justify="left" flexWrap="wrap" mb="24px">
+              {movie.contents.Search.map((m: any) => (
+                <VStack key={m?.imdbID} w="150px" h="325px" m="5px">
+                  <Image
+                    src={verifyPoster(m)}
+                    w="150px"
+                    h="225px"
+                    objectFit="cover"
+                  />
+                  <Text
+                    fontSize="14px"
+                    h="42px"
+                    overflow="hidden"
+                    mb="16px"
+                  >{`${m?.Title} (${m?.Year})`}</Text>
+                  <Button
+                    onClick={() => onOpenDetails(m)}
+                    color="bgBlack"
+                    size="sm"
+                  >
+                    Detail
+                  </Button>
+                </VStack>
+              ))}
+            </Flex>
+            {movie?.contents?.totalResults > CONTENTS_PER_PAGE && (
+              <Pagination />
+            )}
+          </Box>
         ) : (
           <>{renderErrorMsg(movie?.contents?.Error)}</>
         )}
@@ -97,7 +107,7 @@ const MovieListing = () => {
             <ModalBody>
               <Flex>
                 <Box mr="24px">
-                  <Image src={selectedMovie.Poster} w="300px" />
+                  <Image src={verifyPoster(selectedMovie)} w="300px" />
                 </Box>
                 <Box>
                   <Text fontWeight="bold" fontSize="24px" mb="24px">

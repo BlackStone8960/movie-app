@@ -8,6 +8,7 @@ export type MovieState = {
   contents: any;
   status: "idle" | "loading" | "failed";
   searchTitle: string;
+  page: number;
 };
 
 export type FetchMoviesParams = {
@@ -22,6 +23,7 @@ const initialState: MovieState = {
   contents: null,
   status: "idle",
   searchTitle: "",
+  page: 1,
 };
 
 export const fetchMovies = createAsyncThunk(
@@ -46,6 +48,9 @@ export const movieSlice = createSlice({
     setSearchTitle: (state, action) => {
       state.searchTitle = action.payload;
     },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,5 +67,5 @@ export const movieSlice = createSlice({
   },
 });
 
-export const { setContents, setSearchTitle } = movieSlice.actions;
+export const { setContents, setSearchTitle, setPage } = movieSlice.actions;
 export default movieSlice.reducer;

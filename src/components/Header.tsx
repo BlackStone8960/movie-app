@@ -1,24 +1,28 @@
-import { SearchIcon } from "@chakra-ui/icons";
+import { CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   HStack,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
 import { useAppDispatch } from "../redux/hooks";
-import { fetchMovies, setSearchTitle } from "../redux/movieSlice";
+import { fetchMovies, setPage, setSearchTitle } from "../redux/movieSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
 
   useEffect(() => {
+    console.log("Come from Header Component");
+    console.log({ HeaderTitle: title });
     if (title) dispatch(fetchMovies({ s: title }));
     dispatch(setSearchTitle(title));
+    dispatch(setPage(1));
   }, [title]);
 
   return (
@@ -38,14 +42,20 @@ const Header = () => {
           </Text>
         </Box>
         <InputGroup w="500px">
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
           <Input
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Search by title"
             _placeholder={{ color: "fontWhite" }}
           />
-          <InputRightElement>
-            <SearchIcon />
-          </InputRightElement>
+          {title && (
+            <InputRightElement>
+              <CloseIcon cursor="pointer" onClick={() => setTitle("")} />
+            </InputRightElement>
+          )}
         </InputGroup>
       </HStack>
     </Box>
