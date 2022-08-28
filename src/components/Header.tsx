@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
 import { useAppDispatch } from "../redux/hooks";
-import { fetchMovies } from "../redux/movieSlice";
+import { fetchMovies, setSearchTitle } from "../redux/movieSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +18,7 @@ const Header = () => {
 
   useEffect(() => {
     if (title) dispatch(fetchMovies({ s: title }));
+    dispatch(setSearchTitle(title));
   }, [title]);
 
   return (

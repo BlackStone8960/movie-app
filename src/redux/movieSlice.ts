@@ -4,15 +4,10 @@ import { omitBy } from "lodash";
 import query from "query-string";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
 
-export type Contents = {
-  Search: any[];
-  totalResults: string;
-  Response: string;
-};
-
 export type MovieState = {
-  contents: Contents | null;
+  contents: any;
   status: "idle" | "loading" | "failed";
+  searchTitle: string;
 };
 
 export type FetchMoviesParams = {
@@ -26,6 +21,7 @@ export type FetchMoviesParams = {
 const initialState: MovieState = {
   contents: null,
   status: "idle",
+  searchTitle: "",
 };
 
 export const fetchMovies = createAsyncThunk(
@@ -44,8 +40,11 @@ export const movieSlice = createSlice({
   name: "movie",
   initialState,
   reducers: {
-    set: (state, action) => {
+    setContents: (state, action) => {
       state.contents = action.payload;
+    },
+    setSearchTitle: (state, action) => {
+      state.searchTitle = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -55,7 +54,7 @@ export const movieSlice = createSlice({
       })
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.status = "idle";
-        movieSlice.caseReducers.set(state, action);
+        movieSlice.caseReducers.setContents(state, action);
       })
       .addCase(fetchMovies.rejected, (state) => {
         state.status = "failed";
@@ -63,5 +62,5 @@ export const movieSlice = createSlice({
   },
 });
 
-export const { set } = movieSlice.actions;
+export const { setContents, setSearchTitle } = movieSlice.actions;
 export default movieSlice.reducer;
