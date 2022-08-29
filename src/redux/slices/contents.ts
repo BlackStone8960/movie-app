@@ -15,7 +15,11 @@ export const fetchContents = createAsyncThunk(
   "movie/fetchContents",
   async (params: FetchContentsParams) => {
     const defaultUrl = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}`;
+
+    // Omit params that are null or undefined
     const queryObject = omitBy(params, isNullOrUndefined);
+
+    // Create params string to search contents
     const paramsString = query.stringify(queryObject);
     const url = `${defaultUrl}&${paramsString}`;
     const { data } = await axios.get(url);
@@ -23,6 +27,7 @@ export const fetchContents = createAsyncThunk(
   }
 );
 
+// Slice to store search results and the search term
 export const contentsSlice = createSlice({
   name: "contents",
   initialState,

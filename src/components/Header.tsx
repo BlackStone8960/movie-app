@@ -19,8 +19,7 @@ const Header = () => {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    console.log("Come from Header Component");
-    console.log({ HeaderTitle: title });
+    // Retrieve contents each time the search term is updated.
     if (title) dispatch(fetchContents({ s: title }));
     dispatch(setSearchTitle(title));
     dispatch(setPage(1));

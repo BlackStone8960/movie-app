@@ -15,8 +15,8 @@ import { isNullOrUndefined } from "../utils/lodashExtensions";
 import Content from "./Content";
 import DarkModal from "./DarkModal";
 import ErrorMsg from "./ErrorMsg";
-import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
+import ProgressIndicator from "./ProgressIndicator";
 
 const ContentsListing = () => {
   const {
@@ -55,13 +55,16 @@ const ContentsListing = () => {
     return result;
   };
 
+  const capitaliseFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
+
   return (
     <>
       <Box p={`calc(${headerHeight} + 16px) ${horizontalMargin} 32px`}>
         {contents?.searchTitle === "" ? (
           <ErrorMsg text="Enter some words in the search box!" />
         ) : contents?.status === "loading" ? (
-          <LoadingSpinner />
+          <ProgressIndicator />
         ) : contents?.status === "idle" && contents?.result?.Search?.length ? (
           <Box>
             <Text mb="24px">
@@ -98,7 +101,7 @@ const ContentsListing = () => {
               </Text>
               <VStack align="flex-start">
                 <Text>Year: {selectedContent.Year}</Text>
-                <Text>Type: {selectedContent.Type}</Text>
+                <Text>Type: {capitaliseFirstLetter(selectedContent.Type)}</Text>
                 <Text>ID: {selectedContent.imdbID}</Text>
               </VStack>
             </Box>

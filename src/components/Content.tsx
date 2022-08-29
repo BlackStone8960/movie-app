@@ -4,6 +4,7 @@ import { ContentProps } from "../types/components/Content";
 import { verifyPoster } from "../utils/image";
 
 const Content = ({ content, onClickDetail }: ContentProps) => {
+  // For strings exceeding a given number of characters, omit the excess characters.
   const omitString = (str?: string) => {
     let result = "";
     if (str)

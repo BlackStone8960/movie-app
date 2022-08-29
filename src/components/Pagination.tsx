@@ -28,8 +28,6 @@ const Pagination = () => {
 
     if (paginationClicked && currentPage > 0) {
       dispatch(fetchContents({ s: contents.searchTitle, page: currentPage }));
-      console.log("Come from Pagination");
-      console.log({ page: currentPage, title: contents.searchTitle });
     }
   }, [currentPage]);
 

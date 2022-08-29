@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 
+// Extend Chakra UI theme colors
 const theme = extendTheme({
   colors: {
     bgBlack: "#141414",

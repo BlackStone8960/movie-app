@@ -5,6 +5,7 @@ const initialState: PageState = {
   current: 1,
 };
 
+// Slice to store current page
 export const pageSlice = createSlice({
   name: "page",
   initialState,
