@@ -13,9 +13,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { CONTENTS_PER_PAGE, TITLE_LIMIT } from "../constants/contents";
 import { headerHeight, horizontalMargin } from "../constants/length";
-import { CONTENTS_PER_PAGE, TITLE_LIMIT } from "../constants/page";
 import { useAppSelector } from "../redux/hooks";
+import { isNullOrUndefined } from "../utils/lodashExtensions";
 import ErrorMsg from "./ErrorMsg";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
@@ -59,15 +60,27 @@ const MovieListing = () => {
       ? movie.Poster
       : `${process.env.PUBLIC_URL}/noImageFound.png`;
 
+  // If the number is three or more digits, separate them with commas.
+  const oneThousandSeparator = (num: string | number): string => {
+    let result = "";
+    if (!isNullOrUndefined(num)) result = Number(num).toLocaleString();
+    return result;
+  };
+
   return (
     <>
-      <Box p={`${headerHeight} ${horizontalMargin}`}>
+      <Box p={`calc(${headerHeight} + 16px) ${horizontalMargin} 32px`}>
         {movie?.searchTitle === "" ? (
           <ErrorMsg text="Enter some words in the search box!" />
         ) : movie?.status === "loading" ? (
           <LoadingSpinner />
         ) : movie?.status === "idle" && movie?.contents?.Search?.length ? (
           <Box>
+            <Text mb="24px">
+              {`Page ${oneThousandSeparator(movie?.page)} of 
+              ${oneThousandSeparator(movie?.contents?.totalResults)} 
+              result${movie?.contents?.totalResults > 1 && "s"}`}
+            </Text>
             <Flex align="flex-start" justify="left" flexWrap="wrap" mb="24px">
               {movie.contents.Search.map((m: any) => (
                 <VStack key={m?.imdbID} w="150px" h="325px" m="5px">

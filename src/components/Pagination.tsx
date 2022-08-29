@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Center, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/page";
+import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/contents";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchMovies, setPage } from "../redux/movieSlice";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
@@ -69,6 +69,7 @@ const Pagination = () => {
           fontSize="20px"
           cursor="pointer"
           color={i === currentPage ? "vanflixRed" : "fontWhite"}
+          fontWeight={i === currentPage ? "bold" : "normal"}
         >
           {i}
         </Text>
