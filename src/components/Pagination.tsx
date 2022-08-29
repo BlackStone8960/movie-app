@@ -3,14 +3,14 @@ import { Center, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/contents";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchMovies } from "../redux/slices/contents";
+import { fetchContents } from "../redux/slices/contents";
 import { setPage } from "../redux/slices/page";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
 
 const chevrons = { w: "36px", h: "36px", cursor: "pointer" };
 
 const Pagination = () => {
-  const firstRendering = useRef(true);
+  const firstRendering = useRef<boolean>(true);
   const dispatch = useAppDispatch();
   const {
     contents,
@@ -27,7 +27,7 @@ const Pagination = () => {
     }
 
     if (paginationClicked && currentPage > 0) {
-      dispatch(fetchMovies({ s: contents.searchTitle, page: currentPage }));
+      dispatch(fetchContents({ s: contents.searchTitle, page: currentPage }));
       console.log("Come from Pagination");
       console.log({ page: currentPage, title: contents.searchTitle });
     }
@@ -60,11 +60,7 @@ const Pagination = () => {
       const lowerSideIndex = currentPage - oneSideOfPageRange;
       const upperSideIndex = currentPage + oneSideOfPageRange;
       if (lowerSideIndex > 1) lowerLimit = lowerSideIndex;
-      // else if (1 + PAGINATION_LIMIT > upperSideIndex)
-      //   upperLimit = 1 + PAGINATION_LIMIT;
       if (upperSideIndex < numOfPages) upperLimit = upperSideIndex;
-      // else if (numOfPages - PAGINATION_LIMIT < lowerSideIndex)
-      //   lowerLimit = numOfPages - PAGINATION_LIMIT;
     }
     for (let i = lowerLimit; i <= upperLimit; i++) {
       pageIndexComponents.push(
@@ -109,6 +105,3 @@ const Pagination = () => {
 };
 
 export default Pagination;
-function resetPaginationClicked(arg0: boolean): any {
-  throw new Error("Function not implemented.");
-}

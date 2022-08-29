@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
 import { useAppDispatch } from "../redux/hooks";
-import { fetchMovies, setSearchTitle } from "../redux/slices/contents";
+import { fetchContents, setSearchTitle } from "../redux/slices/contents";
 import { setPage } from "../redux/slices/page";
 
 const Header = () => {
@@ -21,7 +21,7 @@ const Header = () => {
   useEffect(() => {
     console.log("Come from Header Component");
     console.log({ HeaderTitle: title });
-    if (title) dispatch(fetchMovies({ s: title }));
+    if (title) dispatch(fetchContents({ s: title }));
     dispatch(setSearchTitle(title));
     dispatch(setPage(1));
   }, [title]);
@@ -48,7 +48,7 @@ const Header = () => {
           </InputLeftElement>
           <Input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(event) => setTitle(event.target.value)}
             placeholder="Search by title"
             _placeholder={{ color: "fontWhite" }}
           />

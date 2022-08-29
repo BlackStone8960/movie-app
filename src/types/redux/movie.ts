@@ -4,7 +4,7 @@ export type ContentsState = {
   searchTitle: string;
 };
 
-export type FetchMoviesParams = {
+export type FetchContentsParams = {
   s: string;
   type?: string;
   y?: string;

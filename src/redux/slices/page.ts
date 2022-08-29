@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PageState } from "../../types/page";
+import { PageState } from "../../types/redux/page";
 
 const initialState: PageState = {
   current: 1,
