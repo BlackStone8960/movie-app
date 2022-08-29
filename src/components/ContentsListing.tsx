@@ -48,7 +48,7 @@ const ContentsListing = () => {
     onOpen();
   };
 
-  // If the number is three or more digits, separate them with commas.
+  // If the number is four or more digits, separate them with commas.
   const oneThousandSeparator = (num: string | number): string => {
     let result = "";
     if (!isNullOrUndefined(num)) result = Number(num).toLocaleString();
