@@ -82,19 +82,19 @@ const Pagination = () => {
       {numOfPages !== 0 && (
         <Center p="16px 0">
           <HStack spacing="20px" wrap="wrap" justify="center">
-            <ChevronLeftIcon
-              onClick={() =>
-                currentPage > 1 && onPaginationClicked(currentPage - 1)
-              }
-              sx={chevrons}
-            />
+            {currentPage > 1 && (
+              <ChevronLeftIcon
+                onClick={() => onPaginationClicked(currentPage - 1)}
+                sx={chevrons}
+              />
+            )}
             {createPagination(numOfPages)}
-            <ChevronRightIcon
-              onClick={() =>
-                currentPage < numOfPages && onPaginationClicked(currentPage + 1)
-              }
-              sx={chevrons}
-            />
+            {currentPage < numOfPages && (
+              <ChevronRightIcon
+                onClick={() => onPaginationClicked(currentPage + 1)}
+                sx={chevrons}
+              />
+            )}
           </HStack>
         </Center>
       )}
