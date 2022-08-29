@@ -1,5 +1,5 @@
 # VANFLIX - Movie search app
-You can search movies, dramas etc. stored in OMDb API (http://www.omdbapi.com/) by title with this app.
+The application allows you to search for movies, dramas and games present in OMDb API (http://www.omdbapi.com/).
 
 ## Environment File Variables
 Local environment configurations can be specified by creating a .env file in the project root.
