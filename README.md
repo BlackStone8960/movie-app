@@ -1,4 +1,4 @@
-# OMDb Searcher
+# VANFLIX
 You can search movies, dramas etc. stored in OMDb API(http://www.omdbapi.com/) by title with this app.
 
 ## Environment File Variables
