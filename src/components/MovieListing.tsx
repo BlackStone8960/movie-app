@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
-import { CONTENTS_PER_PAGE } from "../constants/page";
+import { CONTENTS_PER_PAGE, TITLE_LIMIT } from "../constants/page";
 import { useAppSelector } from "../redux/hooks";
 import ErrorMsg from "./ErrorMsg";
 import LoadingSpinner from "./LoadingSpinner";
@@ -24,6 +24,13 @@ const MovieListing = () => {
   const { movie } = useAppSelector((state) => state);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedMovie, setSelectedMovie] = useState<any>(null);
+
+  const omitString = (str?: string) => {
+    let result = "";
+    if (str)
+      result = str.length > TITLE_LIMIT ? str.slice(0, TITLE_LIMIT) + "…" : str;
+    return result;
+  };
 
   const renderErrorMsg = (error: any) => {
     let errorMsg = "";
@@ -61,14 +68,7 @@ const MovieListing = () => {
           <LoadingSpinner />
         ) : movie?.status === "idle" && movie?.contents?.Search?.length ? (
           <Box>
-            <Flex
-              align="flex-start"
-              justify="left"
-              alignContent="flex-start"
-              flexWrap="wrap"
-              mb="24px"
-              minH="670px"
-            >
+            <Flex align="flex-start" justify="left" flexWrap="wrap" mb="24px">
               {movie.contents.Search.map((m: any) => (
                 <VStack key={m?.imdbID} w="150px" h="325px" m="5px">
                   <Image
@@ -82,7 +82,7 @@ const MovieListing = () => {
                     h="42px"
                     overflow="hidden"
                     mb="16px"
-                  >{`${m?.Title} (${m?.Year})`}</Text>
+                  >{`${omitString(m?.Title)} (${m?.Year})`}</Text>
                   <Button
                     onClick={() => onOpenDetails(m)}
                     color="bgBlack"
