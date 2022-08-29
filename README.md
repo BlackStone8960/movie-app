@@ -1,7 +1,7 @@
 # VANFLIX - Movie search app
 The application allows you to search for movies, dramas and games present in OMDb API (http://www.omdbapi.com/).
 
-## Environment File Variables
+## Environment Variable
 Local environment configurations can be specified by creating a .env file in the project root.
 
 |Variable|Example value|Description|
@@ -11,8 +11,8 @@ Local environment configurations can be specified by creating a .env file in the
 ## Run the app
 You can run this app by typing the commands `npm start` or `yarn start`.
 
-## Tools
-In this project, I used following tools.
+## Tech stacks
+In this project, I used following tech stacks.
 - React
 - Redux
 - TypeScript
