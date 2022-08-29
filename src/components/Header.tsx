@@ -40,7 +40,12 @@ const Header = () => {
       <HStack h="100%">
         {!isMobile && (
           <Box mr="30vw">
-            <Text fontFamily="Bebas Neue" fontSize="24px" color="vanflixRed">
+            <Text
+              fontFamily="'Bebas Neue', cursive"
+              fontSize="32px"
+              color="vanflixRed"
+              letterSpacing="2px"
+            >
               VANFLIX
             </Text>
           </Box>
