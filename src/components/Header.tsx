@@ -7,6 +7,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
@@ -17,6 +18,7 @@ import { setPage } from "../redux/slices/page";
 const Header = () => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     // Retrieve contents each time the search term is updated.
@@ -36,11 +38,13 @@ const Header = () => {
       bgColor="bgBlack"
     >
       <HStack h="100%">
-        <Box mr="30vw">
-          <Text fontFamily="Bebas Neue" fontSize="24px" color="vanflixRed">
-            VANFLIX
-          </Text>
-        </Box>
+        {!isMobile && (
+          <Box mr="30vw">
+            <Text fontFamily="Bebas Neue" fontSize="24px" color="vanflixRed">
+              VANFLIX
+            </Text>
+          </Box>
+        )}
         <InputGroup w="500px">
           <InputLeftElement>
             <SearchIcon />

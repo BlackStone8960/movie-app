@@ -5,7 +5,9 @@ import { ErrorMsgProps } from "../types/components/ErrorMsg";
 const ErrorMsg = ({ text }: ErrorMsgProps) => {
   return (
     <Center h={`calc(100vh - ${headerHeight})`}>
-      <Text fontSize="32px">{text}</Text>
+      <Text fontSize="32px" textAlign="center">
+        {text}
+      </Text>
     </Center>
   );
 };
