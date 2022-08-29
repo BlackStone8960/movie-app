@@ -3,8 +3,8 @@ import { Center, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/contents";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchMovies } from "../redux/slices/contentsSlice";
-import { setPage } from "../redux/slices/pageSlice";
+import { fetchMovies } from "../redux/slices/contents";
+import { setPage } from "../redux/slices/page";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
 
 const chevrons = { w: "36px", h: "36px", cursor: "pointer" };
