@@ -22,9 +22,12 @@ import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
 
 const MovieListing = () => {
-  const { movie } = useAppSelector((state) => state);
+  const {
+    contents,
+    page: { current: currentPage },
+  } = useAppSelector((state) => state);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedMovie, setSelectedMovie] = useState<any>(null);
+  const [selectedContent, setSelectedContent] = useState<any>(null);
 
   const omitString = (str?: string) => {
     let result = "";
@@ -50,14 +53,14 @@ const MovieListing = () => {
     return <ErrorMsg text={errorMsg} />;
   };
 
-  const onOpenDetails = (movie: any) => {
-    setSelectedMovie(movie);
+  const onOpenDetails = (content: any) => {
+    setSelectedContent(content);
     onOpen();
   };
 
-  const verifyPoster = (movie: any): string =>
-    movie.Poster !== "N/A" && movie?.Poster
-      ? movie.Poster
+  const verifyPoster = (content: any): string =>
+    content.Poster !== "N/A" && content?.Poster
+      ? content.Poster
       : `${process.env.PUBLIC_URL}/noImageFound.png`;
 
   // If the number is three or more digits, separate them with commas.
@@ -70,19 +73,19 @@ const MovieListing = () => {
   return (
     <>
       <Box p={`calc(${headerHeight} + 16px) ${horizontalMargin} 32px`}>
-        {movie?.searchTitle === "" ? (
+        {contents?.searchTitle === "" ? (
           <ErrorMsg text="Enter some words in the search box!" />
-        ) : movie?.status === "loading" ? (
+        ) : contents?.status === "loading" ? (
           <LoadingSpinner />
-        ) : movie?.status === "idle" && movie?.contents?.Search?.length ? (
+        ) : contents?.status === "idle" && contents?.result?.Search?.length ? (
           <Box>
             <Text mb="24px">
-              {`Page ${oneThousandSeparator(movie?.page)} of 
-              ${oneThousandSeparator(movie?.contents?.totalResults)} 
-              result${movie?.contents?.totalResults > 1 && "s"}`}
+              {`Page ${oneThousandSeparator(currentPage)} of 
+              ${oneThousandSeparator(contents?.result?.totalResults)} 
+              result${contents?.result?.totalResults > 1 && "s"}`}
             </Text>
             <Flex align="flex-start" justify="left" flexWrap="wrap" mb="24px">
-              {movie.contents.Search.map((m: any) => (
+              {contents.result.Search.map((m: any) => (
                 <VStack key={m?.imdbID} w="150px" h="325px" m="5px">
                   <Image
                     src={verifyPoster(m)}
@@ -106,15 +109,15 @@ const MovieListing = () => {
                 </VStack>
               ))}
             </Flex>
-            {movie?.contents?.totalResults > CONTENTS_PER_PAGE && (
+            {contents?.result?.totalResults > CONTENTS_PER_PAGE && (
               <Pagination />
             )}
           </Box>
         ) : (
-          <>{renderErrorMsg(movie?.contents?.Error)}</>
+          <>{renderErrorMsg(contents?.result?.Error)}</>
         )}
       </Box>
-      {selectedMovie && (
+      {selectedContent && (
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay bg="blackAlpha.700" />
           <ModalContent
@@ -127,16 +130,16 @@ const MovieListing = () => {
             <ModalBody>
               <Flex>
                 <Box mr="24px">
-                  <Image src={verifyPoster(selectedMovie)} w="300px" />
+                  <Image src={verifyPoster(selectedContent)} w="300px" />
                 </Box>
                 <Box>
                   <Text fontWeight="bold" fontSize="24px" mb="24px">
-                    {selectedMovie.Title}
+                    {selectedContent.Title}
                   </Text>
                   <VStack align="flex-start">
-                    <Text>Year: {selectedMovie.Year}</Text>
-                    <Text>Type: {selectedMovie.Type}</Text>
-                    <Text>ID: {selectedMovie.imdbID}</Text>
+                    <Text>Year: {selectedContent.Year}</Text>
+                    <Text>Type: {selectedContent.Type}</Text>
+                    <Text>ID: {selectedContent.imdbID}</Text>
                   </VStack>
                 </Box>
               </Flex>

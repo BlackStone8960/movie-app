@@ -2,28 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { omitBy } from "lodash";
 import query from "query-string";
-import { isNullOrUndefined } from "../utils/lodashExtensions";
+import { ContentsState, FetchMoviesParams } from "../../types/movie";
+import { isNullOrUndefined } from "../../utils/lodashExtensions";
 
-export type MovieState = {
-  contents: any;
-  status: "idle" | "loading" | "failed";
-  searchTitle: string;
-  page: number;
-};
-
-export type FetchMoviesParams = {
-  s: string;
-  type?: string;
-  y?: string;
-  plot?: string;
-  page?: number;
-};
-
-const initialState: MovieState = {
-  contents: null,
+const initialState: ContentsState = {
+  result: null,
   status: "idle",
   searchTitle: "",
-  page: 1,
 };
 
 export const fetchMovies = createAsyncThunk(
@@ -38,18 +23,15 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
-export const movieSlice = createSlice({
-  name: "movie",
+export const contentsSlice = createSlice({
+  name: "contents",
   initialState,
   reducers: {
     setContents: (state, action) => {
-      state.contents = action.payload;
+      state.result = action.payload;
     },
     setSearchTitle: (state, action) => {
       state.searchTitle = action.payload;
-    },
-    setPage: (state, action) => {
-      state.page = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -59,7 +41,7 @@ export const movieSlice = createSlice({
       })
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.status = "idle";
-        movieSlice.caseReducers.setContents(state, action);
+        contentsSlice.caseReducers.setContents(state, action);
       })
       .addCase(fetchMovies.rejected, (state) => {
         state.status = "failed";
@@ -67,5 +49,5 @@ export const movieSlice = createSlice({
   },
 });
 
-export const { setContents, setSearchTitle, setPage } = movieSlice.actions;
-export default movieSlice.reducer;
+export const { setContents, setSearchTitle } = contentsSlice.actions;
+export default contentsSlice.reducer;

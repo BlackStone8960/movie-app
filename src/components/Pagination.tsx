@@ -3,7 +3,8 @@ import { Center, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { CONTENTS_PER_PAGE, PAGINATION_LIMIT } from "../constants/contents";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchMovies, setPage } from "../redux/movieSlice";
+import { fetchMovies } from "../redux/slices/contentsSlice";
+import { setPage } from "../redux/slices/pageSlice";
 import { isNullOrUndefined } from "../utils/lodashExtensions";
 
 const chevrons = { w: "36px", h: "36px", cursor: "pointer" };
@@ -11,7 +12,10 @@ const chevrons = { w: "36px", h: "36px", cursor: "pointer" };
 const Pagination = () => {
   const firstRendering = useRef(true);
   const dispatch = useAppDispatch();
-  const { movie } = useAppSelector((state) => state);
+  const {
+    contents,
+    page: { current: currentPage },
+  } = useAppSelector((state) => state);
   const [numOfPages, setNumOfPages] = useState(0);
   const [paginationClicked, setPaginationClicked] = useState(false);
 
@@ -22,21 +26,23 @@ const Pagination = () => {
       return;
     }
 
-    if (paginationClicked && movie.page > 0) {
-      dispatch(fetchMovies({ s: movie.searchTitle, page: movie.page }));
+    if (paginationClicked && currentPage > 0) {
+      dispatch(fetchMovies({ s: contents.searchTitle, page: currentPage }));
       console.log("Come from Pagination");
-      console.log({ page: movie.page, title: movie.searchTitle });
+      console.log({ page: currentPage, title: contents.searchTitle });
     }
-  }, [movie.page]);
+  }, [currentPage]);
 
   useEffect(() => {
     if (
-      !isNullOrUndefined(movie?.contents) &&
-      movie.contents.totalResults !== 0
+      !isNullOrUndefined(contents?.result) &&
+      contents.result.totalResults !== 0
     ) {
-      setNumOfPages(Math.ceil(movie.contents.totalResults / CONTENTS_PER_PAGE));
+      setNumOfPages(
+        Math.ceil(contents.result.totalResults / CONTENTS_PER_PAGE)
+      );
     }
-  }, [movie.contents?.totalResults]);
+  }, [contents.result?.totalResults]);
 
   const onPaginationClicked = async (i: number) => {
     await setPaginationClicked(true);
@@ -47,7 +53,6 @@ const Pagination = () => {
     const pageIndexComponents = [];
     let lowerLimit = 1;
     let upperLimit = numOfPages;
-    const currentPage = movie.page;
     const oneSideOfPageRange = Math.floor(PAGINATION_LIMIT / 2);
 
     // If the total number of pages is greater than the defined pagination range, do not display all page indexes
@@ -85,14 +90,14 @@ const Pagination = () => {
           <HStack spacing="20px" wrap="wrap" justify="center">
             <ChevronLeftIcon
               onClick={() =>
-                movie.page > 1 && onPaginationClicked(movie.page - 1)
+                currentPage > 1 && onPaginationClicked(currentPage - 1)
               }
               sx={chevrons}
             />
             {createPagination(numOfPages)}
             <ChevronRightIcon
               onClick={() =>
-                movie.page < numOfPages && onPaginationClicked(movie.page + 1)
+                currentPage < numOfPages && onPaginationClicked(currentPage + 1)
               }
               sx={chevrons}
             />
@@ -104,3 +109,6 @@ const Pagination = () => {
 };
 
 export default Pagination;
+function resetPaginationClicked(arg0: boolean): any {
+  throw new Error("Function not implemented.");
+}

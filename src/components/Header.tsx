@@ -11,7 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { headerHeight, horizontalMargin } from "../constants/length";
 import { useAppDispatch } from "../redux/hooks";
-import { fetchMovies, setPage, setSearchTitle } from "../redux/movieSlice";
+import { fetchMovies, setSearchTitle } from "../redux/slices/contentsSlice";
+import { setPage } from "../redux/slices/pageSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
