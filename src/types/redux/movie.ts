@@ -2,6 +2,7 @@ export type ContentsState = {
   result: any;
   status: "idle" | "loading" | "failed";
   searchTitle: string;
+  searchType: string;
 };
 
 export type FetchContentsParams = {

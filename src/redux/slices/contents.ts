@@ -9,6 +9,7 @@ const initialState: ContentsState = {
   result: null,
   status: "idle",
   searchTitle: "",
+  searchType: "",
 };
 
 export const fetchContents = createAsyncThunk(
@@ -38,6 +39,9 @@ export const contentsSlice = createSlice({
     setSearchTitle: (state, action) => {
       state.searchTitle = action.payload;
     },
+    setSearchType: (state, action) => {
+      state.searchType = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -54,5 +58,6 @@ export const contentsSlice = createSlice({
   },
 });
 
-export const { setContents, setSearchTitle } = contentsSlice.actions;
+export const { setContents, setSearchTitle, setSearchType } =
+  contentsSlice.actions;
 export default contentsSlice.reducer;

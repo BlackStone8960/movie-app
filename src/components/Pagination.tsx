@@ -27,7 +27,13 @@ const Pagination = () => {
     }
 
     if (paginationClicked && currentPage > 0) {
-      dispatch(fetchContents({ s: contents.searchTitle, page: currentPage }));
+      dispatch(
+        fetchContents({
+          s: contents.searchTitle,
+          page: currentPage,
+          type: contents.searchType,
+        })
+      );
     }
   }, [currentPage]);
 
@@ -58,7 +64,11 @@ const Pagination = () => {
       const lowerSideIndex = currentPage - oneSideOfPageRange;
       const upperSideIndex = currentPage + oneSideOfPageRange;
       if (lowerSideIndex > 1) lowerLimit = lowerSideIndex;
+      // else if (1 + PAGINATION_LIMIT > upperSideIndex)
+      //   upperLimit = 1 + PAGINATION_LIMIT;
       if (upperSideIndex < numOfPages) upperLimit = upperSideIndex;
+      // else if (numOfPages - PAGINATION_LIMIT < lowerSideIndex)
+      //   lowerLimit = numOfPages - PAGINATION_LIMIT;
     }
     for (let i = lowerLimit; i <= upperLimit; i++) {
       pageIndexComponents.push(
